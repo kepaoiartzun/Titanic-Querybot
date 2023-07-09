@@ -39,6 +39,7 @@ class Conversation:
                 The columns of the table with their definitions are listed below, delimited by triple backticks.
                 ```{table.table_columns}```
                 If the user asks you something that is not related to the task of analyzing the table {table.table_name}, you will ask them to ask something related to analyzing the table {table.table_name}.
+                The output should be a markdown code snippet with the SQL code only, including the leading and trailing "\`\`\`sql" and "\`\`\`"
                 """
         }]
         self.explain_context = [{
@@ -80,7 +81,7 @@ class Conversation:
         self.context.append(
             {'role':'system', 'content':response}
         )
-        query = re.findall("```\n([\w\W]*?)\n```", response)
+        query = re.findall("```sql\n([\w\W]*?)\n```", response)
         if len(query) == 0:
             return {'query':None, 'query_result':None, "response":response}
         else:
